@@ -12,6 +12,13 @@ import type {
 } from "./types.sandbox.js";
 import type { MemorySearchConfig } from "./types.tools.js";
 
+export type SelfImproveConfig = {
+  /** Enable auto-improvement prompt injection (default: false). */
+  enabled?: boolean;
+  /** Optional prompt to append to the system prompt. */
+  prompt?: string;
+};
+
 export type AgentModelEntryConfig = {
   alias?: string;
   /** Provider-specific API parameters (e.g., GLM-4.7 thinking mode). */
@@ -241,6 +248,8 @@ export type AgentDefaultsConfig = {
     /** Auto-prune sandbox containers. */
     prune?: SandboxPruneSettings;
   };
+  /** Opt-in system prompt hints for self-improvement. */
+  selfImprove?: SelfImproveConfig;
 };
 
 export type AgentCompactionMode = "default" | "safeguard";

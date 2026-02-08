@@ -443,6 +443,13 @@ export const AgentEntrySchema = z
     heartbeat: HeartbeatSchema,
     identity: IdentitySchema,
     groupChat: GroupChatSchema,
+    selfImprove: z
+      .object({
+        enabled: z.boolean().optional(),
+        prompt: z.string().optional(),
+      })
+      .strict()
+      .optional(),
     subagents: z
       .object({
         allowAgents: z.array(z.string()).optional(),
@@ -507,6 +514,30 @@ export const ToolsSchema = z
       .object({
         enabled: z.boolean().optional(),
         allow: z.array(z.string()).optional(),
+      })
+      .strict()
+      .optional(),
+    peers: z
+      .object({
+        enabled: z.boolean().optional(),
+        allow: z.array(z.string()).optional(),
+        peers: z
+          .array(
+            z
+              .object({
+                id: z.string(),
+                label: z.string().optional(),
+                url: z.string(),
+                token: z.string().optional(),
+                password: z.string().optional(),
+                tlsFingerprint: z.string().optional(),
+                agentId: z.string().optional(),
+                sessionKey: z.string().optional(),
+                enabled: z.boolean().optional(),
+              })
+              .strict(),
+          )
+          .optional(),
       })
       .strict()
       .optional(),
