@@ -22,6 +22,7 @@ import {
   resolveThinkingDefault,
 } from "../agents/model-selection.js";
 import { runEmbeddedPiAgent } from "../agents/pi-embedded.js";
+import { resolveSelfImprovePrompt } from "../agents/self-improve.js";
 import { buildWorkspaceSkillSnapshot } from "../agents/skills.js";
 import { getSkillsSnapshotVersion } from "../agents/skills/refresh.js";
 import { resolveAgentTimeoutMs } from "../agents/timeout.js";
@@ -95,6 +96,7 @@ export async function agentCommand(
   }
   const agentCfg = cfg.agents?.defaults;
   const sessionAgentId = agentIdOverride ?? resolveAgentIdFromSessionKey(opts.sessionKey?.trim());
+  const selfImprovePrompt = resolveSelfImprovePrompt({ config: cfg, agentId: sessionAgentId });
   const workspaceDirRaw = resolveAgentWorkspaceDir(cfg, sessionAgentId);
   const agentDir = resolveAgentDir(cfg, sessionAgentId);
   const workspace = await ensureAgentWorkspace({
@@ -156,6 +158,10 @@ export async function agentCommand(
   } = sessionResolution;
   let sessionEntry = resolvedSessionEntry;
   const runId = opts.runId?.trim() || sessionId;
+  const extraSystemPrompt = [opts.extraSystemPrompt, selfImprovePrompt]
+    .filter((value): value is string => typeof value === "string" && value.trim().length > 0)
+    .map((value) => value.trim())
+    .join("\n\n");
 
   try {
     if (opts.deliver === true) {
@@ -408,7 +414,7 @@ export async function agentCommand(
               thinkLevel: resolvedThinkLevel,
               timeoutMs,
               runId,
-              extraSystemPrompt: opts.extraSystemPrompt,
+              extraSystemPrompt: extraSystemPrompt || undefined,
               cliSessionId,
               images: opts.images,
               streamParams: opts.streamParams,
@@ -452,7 +458,7 @@ export async function agentCommand(
             runId,
             lane: opts.lane,
             abortSignal: opts.abortSignal,
-            extraSystemPrompt: opts.extraSystemPrompt,
+            extraSystemPrompt: extraSystemPrompt || undefined,
             streamParams: opts.streamParams,
             agentDir,
             onAgentEvent: (evt) => {

@@ -221,6 +221,36 @@ export type AgentToolsConfig = {
   };
 };
 
+export type PeerBotConfig = {
+  /** Stable peer id (used by peers_chat). */
+  id: string;
+  /** Friendly label for logs/UI. */
+  label?: string;
+  /** Gateway websocket URL (ws:// or wss://). */
+  url: string;
+  /** Gateway auth token for the peer (recommended). */
+  token?: string;
+  /** Gateway auth password for the peer (optional). */
+  password?: string;
+  /** Optional TLS fingerprint (SHA-256). */
+  tlsFingerprint?: string;
+  /** Optional default agent id on the peer to target. */
+  agentId?: string;
+  /** Optional default session key on the peer to target. */
+  sessionKey?: string;
+  /** Enable/disable this peer entry. */
+  enabled?: boolean;
+};
+
+export type PeerBotsConfig = {
+  /** Enable peer chat tool (default: false). */
+  enabled?: boolean;
+  /** Allowlist of peer ids/patterns. */
+  allow?: string[];
+  /** List of known peers. */
+  peers?: PeerBotConfig[];
+};
+
 export type MemorySearchConfig = {
   /** Enable vector memory search (default: true). */
   enabled?: boolean;
@@ -424,6 +454,7 @@ export type ToolsConfig = {
     /** Allowlist of agent ids or patterns (implementation-defined). */
     allow?: string[];
   };
+  peers?: PeerBotsConfig;
   /** Elevated exec permissions for the host machine. */
   elevated?: {
     /** Enable or disable elevated mode (default: true). */

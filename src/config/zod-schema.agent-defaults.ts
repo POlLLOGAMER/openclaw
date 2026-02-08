@@ -170,6 +170,13 @@ export const AgentDefaultsSchema = z
       })
       .strict()
       .optional(),
+    selfImprove: z
+      .object({
+        enabled: z.boolean().optional(),
+        prompt: z.string().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict()
   .optional();
