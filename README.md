@@ -1,4 +1,6 @@
+
 # SKYNET openclaw
+<img width="300" height="168" alt="images (1)" src="https://github.com/user-attachments/assets/da3bc4ac-88b8-4afb-b557-2ef298ac1b39" />
 
 **SKYNET openclaw** is a fork of OpenClaw focused on real autonomy: active self-improvement, automatic peer-to-peer conversation, and a more proactive operating style. Everything is controlled by configuration so you can adjust the level of autonomy.
 
